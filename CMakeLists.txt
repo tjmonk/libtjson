@@ -11,7 +11,6 @@ include(GNUInstallDirs)
 
 find_package(BISON)
 find_package(FLEX)
-find_library(LIB_VARSERVER varserver REQUIRED)
 
 FLEX_TARGET( TJSON_Scanner src/lexan.l ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c )
 BISON_TARGET( TJSON_Parser src/json_parser.y ${CMAKE_CURRENT_BINARY_DIR}/y.c )
@@ -23,14 +22,12 @@ add_executable( jsontest
 
 target_link_libraries( jsontest
     tjson
-    ${LIB_VARSERVER}
 )
 
 add_library( ${PROJECT_NAME} SHARED
     src/json.c
     ${BISON_TJSON_Parser_OUTPUTS}
     ${FLEX_TJSON_Scanner_OUTPUTS}
-    ${LIB_VARSERVER}
 )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES
@@ -41,7 +38,10 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 
 set(TJSON_HEADERS inc/json.h)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${TJSON_HEADERS}")
+set_target_properties(${PROJECT_NAME} 
+    PROPERTIES 
+    PUBLIC_HEADER "${TJSON_HEADERS}"
+)
 
 target_include_directories( ${PROJECT_NAME} PRIVATE . )
 

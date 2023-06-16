@@ -32,7 +32,6 @@ SOFTWARE.
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <varserver/var.h>
 
 /*============================================================================
         Defines
@@ -45,6 +44,76 @@ SOFTWARE.
 /*============================================================================
         Public Types
 ============================================================================*/
+
+/*! Variable type enumeration */
+typedef enum _JVarType
+{
+    /*! invalid variable type */
+    VARTYPE_INVALID = 0,
+
+    /*! 16-bit unsigned integer */
+    VARTYPE_UINT16,
+
+    /*! 16-bit signed integer */
+    VARTYPE_INT16,
+
+    /*! 32-bit unsigned integer */
+    VARTYPE_UINT32,
+
+    /*! 32-bit signed integer */
+    VARTYPE_INT32,
+
+    /*! 64-bit unsigned integer */
+    VARTYPE_UINT64,
+
+    /*! 64-bit signed integer */
+    VARTYPE_INT64,
+
+    /*! IEEE754 Floating Point Number */
+    VARTYPE_FLOAT,
+
+    /*! NUL terminated character string */
+    VARTYPE_STR,
+
+    /*! Blob storage type */
+    VARTYPE_BLOB,
+
+    /*! end marker for the type enumeration */
+    VARTYPE_END_MARKER
+
+} JVarType;
+
+/*! variable data union */
+typedef union _JVarData
+{
+    /*! unsigned 16-bit integer */
+    uint16_t ui;
+
+    /*! signed 16-bit integer */
+    int16_t i;
+
+    /*! unsigned 32-bit integer */
+    uint32_t ul;
+
+    /*! signed 32-bit integer */
+    int32_t l;
+
+    /*! unsigned 64-bit integer */
+    uint64_t ull;
+
+    /*! signed 64-bit-integer */
+    int64_t ll;
+
+    /*! IEEE-754 floating point number */
+    float f;
+
+    /*! pointer to a NUL terminated string */
+    char *str;
+
+    /*! void pointer to blob data */
+    void *blob;
+    
+} JVarData;
 
 /*! The JType type identifies a JSON node object as one of ARRAY, OBJECT,
     or VAR */
@@ -121,6 +190,19 @@ typedef struct _JObject
 
 } JObject;
 
+/*! A variable object */
+typedef struct _JVarObject
+{
+    /*! variable type */
+    JVarType type;
+
+    /*! variable length */
+    size_t len;
+
+    /*! variable value */
+    JVarData val;
+
+} JVarObject;
 
 /*! The JVar is a JSON value which contains a
     variable server VarObject */
@@ -129,11 +211,8 @@ typedef struct _JVar
     /*! JSON node */
     JNode node;
 
-    /*! handle to the variable in the var server */
-    VAR_HANDLE hVar;
-
     /*! variable data */
-    VarObject var;
+    JVarObject var;
 
 } JVar;
 
@@ -189,7 +268,7 @@ bool JSON_GetBool( JNode *pNode, char *name );
 
 int JSON_GetNum( JNode *pNode, char *name, int *pVal );
 
-VarObject *JSON_GetVar( JNode *pNode, char *name );
+JVarObject *JSON_GetVar( JNode *pNode, char *name );
 
 int JSON_GetFloat( JNode *pNode, char *name, float *pVal );
 

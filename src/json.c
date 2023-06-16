@@ -1329,12 +1329,12 @@ int JSON_GetNum( JNode *pNode, char *name, int *pVal )
     @retval NULL if the VarObject was not found
 
 ==============================================================================*/
-VarObject *JSON_GetVar( JNode *pNode, char *name )
+JVarObject *JSON_GetVar( JNode *pNode, char *name )
 {
     JObject *pObject;
     JVar *pValue;
     int result = -1;
-    VarObject *pVar = NULL;
+    JVarObject *pVar = NULL;
 
     /* check that the node is an object */
     if ( ( pNode != NULL ) &&
