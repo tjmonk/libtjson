@@ -557,7 +557,7 @@ void JSON_Free( JNode *json )
             case JSON_BOOL:
             case JSON_VAR:
                 pVar = (JVar *)json;
-                if ( pVar->var.type == VARTYPE_STR )
+                if ( pVar->var.type == JVARTYPE_STR )
                 {
                     if ( pVar->var.val.str != NULL )
                     {
@@ -689,19 +689,19 @@ static void json_PrintValue( JVar *pVar, FILE *fp )
         {
             switch( pVar->var.type )
             {
-                case VARTYPE_UINT16:
+                case JVARTYPE_UINT16:
                     fprintf( fp, "%d", pVar->var.val.ui );
                     break;
 
-                case VARTYPE_UINT32:
+                case JVARTYPE_UINT32:
                     fprintf( fp, "%d", pVar->var.val.ul );
                     break;
 
-                case VARTYPE_FLOAT:
+                case JVARTYPE_FLOAT:
                     fprintf( fp, "%f", pVar->var.val.f );
                     break;
 
-                case VARTYPE_STR:
+                case JVARTYPE_STR:
                     fprintf( fp, "\"%s\"", pVar->var.val.str );
                     break;
 
@@ -917,7 +917,7 @@ JVar *JSON_Num( char *name, int num )
     JVar *pVar = JSON_Var( name );
     if( pVar != NULL )
     {
-        pVar->var.type = VARTYPE_UINT32;
+        pVar->var.type = JVARTYPE_UINT32;
         pVar->var.len = sizeof( uint32_t );
         pVar->var.val.ul = num;
     }
@@ -935,12 +935,12 @@ JVar *JSON_Num( char *name, int num )
     into one of the following variable types depending on the value
     of the number:
 
-    - VARTYPE_UINT16
-    - VARTYPE_INT16
-    - VARTYPE_UINT32
-    - VARTYPE_INT32
-    - VARTYPE_UINT64
-    - VARTYPE_INT64
+    - JVARTYPE_UINT16
+    - JVARTYPE_INT16
+    - JVARTYPE_UINT32
+    - JVARTYPE_INT32
+    - JVARTYPE_UINT64
+    - JVARTYPE_INT64
 
     @param[in]
         name
@@ -970,19 +970,19 @@ JVar *JSON_ParseNumber( char *name, char *numstr )
             lli = strtoll( numstr, NULL, 10 );
             if ( ( lli > -32768 ) && ( lli < 32767 ) )
             {
-                pVar->var.type = VARTYPE_INT16;
+                pVar->var.type = JVARTYPE_INT16;
                 pVar->var.len = sizeof( int16_t );
                 pVar->var.val.i = (int16_t)lli;
             }
             else if ( ( lli > -2147483648 ) && ( lli < 2147483647 ) )
             {
-                pVar->var.type = VARTYPE_INT32;
+                pVar->var.type = JVARTYPE_INT32;
                 pVar->var.len = sizeof( int32_t );
                 pVar->var.val.l = (int32_t)lli;
             }
             else
             {
-                pVar->var.type = VARTYPE_INT64;
+                pVar->var.type = JVARTYPE_INT64;
                 pVar->var.len = sizeof( int64_t );
                 pVar->var.val.ll = (int64_t)lli;
             }
@@ -992,19 +992,19 @@ JVar *JSON_ParseNumber( char *name, char *numstr )
             llu = strtoull( numstr, NULL, 10 );
             if ( llu < 65535 )
             {
-                pVar->var.type = VARTYPE_UINT16;
+                pVar->var.type = JVARTYPE_UINT16;
                 pVar->var.len = sizeof( uint16_t );
                 pVar->var.val.ui = (uint16_t)llu;
             }
             else if ( llu < 4294967295 )
             {
-                pVar->var.type = VARTYPE_UINT32;
+                pVar->var.type = JVARTYPE_UINT32;
                 pVar->var.len = sizeof( uint32_t );
                 pVar->var.val.ul = (uint32_t)llu;
             }
             else
             {
-                pVar->var.type = VARTYPE_UINT64;
+                pVar->var.type = JVARTYPE_UINT64;
                 pVar->var.len = sizeof( uint64_t );
                 pVar->var.val.ull = llu;
             }
@@ -1042,7 +1042,7 @@ JVar *JSON_Float( char *name, float num )
     pVar = JSON_Var( name );
     if( pVar != NULL )
     {
-        pVar->var.type = VARTYPE_FLOAT;
+        pVar->var.type = JVARTYPE_FLOAT;
         pVar->var.val.f = num;
         pVar->var.len = sizeof( float );
     }
@@ -1079,7 +1079,7 @@ JVar *JSON_Bool( char *name, int num )
     if( pVar != NULL )
     {
         pVar->node.type = JSON_BOOL;
-        pVar->var.type = VARTYPE_UINT16;
+        pVar->var.type = JVARTYPE_UINT16;
         pVar->var.len = sizeof( uint16_t );
         pVar->var.val.ui = ( num > 0 ) ? 1 : 0;
     }
@@ -1118,7 +1118,7 @@ JVar *JSON_Str( char *name, char *str )
     if( ( pVar != NULL ) &&
         ( str != NULL ) )
     {
-        pVar->var.type = VARTYPE_STR;
+        pVar->var.type = JVARTYPE_STR;
         pVar->var.val.str = str;
         pVar->var.len = strlen( str );
     }
@@ -1168,7 +1168,7 @@ char *JSON_GetStr( JNode *pNode, char *name )
                 if( pNode->type == JSON_VAR )
                 {
                     pValue = (JVar *)pNode;
-                    if( pValue->var.type == VARTYPE_STR )
+                    if( pValue->var.type == JVARTYPE_STR )
                     {
                         result = pValue->var.val.str;
                         break;
@@ -1226,7 +1226,7 @@ bool JSON_GetBool( JNode *pNode, char *name )
                 if( pNode->type == JSON_BOOL )
                 {
                     pValue = (JVar *)pNode;
-                    if( pValue->var.type == VARTYPE_UINT16 )
+                    if( pValue->var.type == JVARTYPE_UINT16 )
                     {
                         result = ( pValue->var.val.ui == 0 ) ? false : true;
                         break;
@@ -1289,7 +1289,7 @@ int JSON_GetNum( JNode *pNode, char *name, int *pVal )
                 if( pNode->type == JSON_VAR )
                 {
                     pValue = (JVar *)pNode;
-                    if( pValue->var.type == VARTYPE_UINT32 )
+                    if( pValue->var.type == JVARTYPE_UINT32 )
                     {
                         *pVal = pValue->var.val.ul;
                         result = 0;
@@ -1411,7 +1411,7 @@ int JSON_GetFloat( JNode *pNode, char *name, float *pVal )
                 if( pNode->type == JSON_VAR )
                 {
                     pValue = (JVar *)pNode;
-                    if( pValue->var.type == VARTYPE_FLOAT )
+                    if( pValue->var.type == JVARTYPE_FLOAT )
                     {
                         *pVal = pValue->var.val.f;
                         result = 0;

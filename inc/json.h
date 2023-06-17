@@ -49,37 +49,37 @@ SOFTWARE.
 typedef enum _JVarType
 {
     /*! invalid variable type */
-    VARTYPE_INVALID = 0,
+    JVARTYPE_INVALID = 0,
 
     /*! 16-bit unsigned integer */
-    VARTYPE_UINT16,
+    JVARTYPE_UINT16,
 
     /*! 16-bit signed integer */
-    VARTYPE_INT16,
+    JVARTYPE_INT16,
 
     /*! 32-bit unsigned integer */
-    VARTYPE_UINT32,
+    JVARTYPE_UINT32,
 
     /*! 32-bit signed integer */
-    VARTYPE_INT32,
+    JVARTYPE_INT32,
 
     /*! 64-bit unsigned integer */
-    VARTYPE_UINT64,
+    JVARTYPE_UINT64,
 
     /*! 64-bit signed integer */
-    VARTYPE_INT64,
+    JVARTYPE_INT64,
 
     /*! IEEE754 Floating Point Number */
-    VARTYPE_FLOAT,
+    JVARTYPE_FLOAT,
 
     /*! NUL terminated character string */
-    VARTYPE_STR,
+    JVARTYPE_STR,
 
     /*! Blob storage type */
-    VARTYPE_BLOB,
+    JVARTYPE_BLOB,
 
     /*! end marker for the type enumeration */
-    VARTYPE_END_MARKER
+    JVARTYPE_END_MARKER
 
 } JVarType;
 
@@ -112,7 +112,7 @@ typedef union _JVarData
 
     /*! void pointer to blob data */
     void *blob;
-    
+
 } JVarData;
 
 /*! The JType type identifies a JSON node object as one of ARRAY, OBJECT,
