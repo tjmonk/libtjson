@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <signal.h>
-#include "json.h"
+#include <tjson/json.h>
 
 /* pointer to the token text */
 extern char *yytext;

@@ -32,7 +32,7 @@ SOFTWARE.
 #include <stddef.h>
 #include <string.h>
 #include <errno.h>
-#include "json.h"
+#include <tjson/json.h>
 
 /*============================================================================
         Defines

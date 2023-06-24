@@ -52,7 +52,7 @@ SOFTWARE.
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
-#include "json.h"
+#include <tjson/json.h>
 
 /*============================================================================
         Defines

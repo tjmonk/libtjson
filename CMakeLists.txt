@@ -36,10 +36,10 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
     POSITION_INDEPENDENT_CODE ON
 )
 
-set(TJSON_HEADERS inc/json.h)
+set(TJSON_HEADERS inc/tjson/json.h)
 
-set_target_properties(${PROJECT_NAME} 
-    PROPERTIES 
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES
     PUBLIC_HEADER "${TJSON_HEADERS}"
 )
 
