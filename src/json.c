@@ -425,6 +425,7 @@ int JSON_ArrayAdd( JArray *pArray, JObject *pObject )
             {
                 pArray->pFirst = (JNode *)pObject;
                 pArray->pLast = (JNode *)pObject;
+                pArray->n = 1;
                 result = EOK;
             }
             else
@@ -433,6 +434,7 @@ int JSON_ArrayAdd( JArray *pArray, JObject *pObject )
                 {
                     pArray->pLast->pNext = (JNode *)pObject;
                     pArray->pLast = (JNode *)pObject;
+                    pArray->n++;
                     result = EOK;
                 }
             }
@@ -1428,3 +1430,32 @@ int JSON_GetFloat( JNode *pNode, char *name, float *pVal )
     return result;
 }
 
+/*============================================================================*/
+/*  JSON_GetArraySize                                                         */
+/*!
+    Get the length of the JSON Array
+
+    The JSON_GetArraySize function returns the length of the JSON array.
+
+    @param[in]
+        pArray
+            pointer to the JSON array object
+
+    @retval -1 the input pointer does not point to a JSON Array
+    @retval the size of the JSON array
+
+==============================================================================*/
+int JSON_GetArraySize( JArray *pArray )
+{
+    int n = -1;
+
+    if ( pArray != NULL )
+    {
+        if( pArray->node.type == JSON_ARRAY )
+        {
+            n = pArray->n;
+        }
+    }
+
+    return n;
+}

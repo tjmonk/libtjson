@@ -272,6 +272,8 @@ JVarObject *JSON_GetVar( JNode *pNode, char *name );
 
 int JSON_GetFloat( JNode *pNode, char *name, float *pVal );
 
+int JSON_GetArraySize( JArray *pArray );
+
 #endif /* JSON_H */
 
 

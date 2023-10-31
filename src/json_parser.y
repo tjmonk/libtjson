@@ -91,11 +91,19 @@ json_object    :  LBRACE attribute_list RBRACE
 json_list      : LBRACKET value_list RBRACKET
 			    {
                     JArray *pArray;
+                    JNode *pNode;
 
 					pArray = JSON_Array( NULL );
                     if( pArray != NULL )
                     {
                         pArray->pFirst = $2;
+                        pNode = pArray->pFirst;
+                        while ( pNode != NULL )
+                        {
+                            pArray->n++;
+                            pNode = pNode->pNext;
+                        }
+
                         $$ = &pArray->node;
                     }
 			    }
