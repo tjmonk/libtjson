@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_BUILD_TYPE Debug)
 
 project(tjson
-	VERSION 0.1
+	VERSION 0.3
 	DESCRIPTION "Tiny JSON Parser"
 )
 
