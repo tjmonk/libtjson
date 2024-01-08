@@ -1290,12 +1290,29 @@ int JSON_GetNum( JNode *pNode, char *name, int *pVal )
             {
                 if( pNode->type == JSON_VAR )
                 {
+                    result = 0;
                     pValue = (JVar *)pNode;
-                    if( pValue->var.type == JVARTYPE_UINT32 )
+                    switch( pValue->var.type )
                     {
-                        *pVal = pValue->var.val.ul;
-                        result = 0;
-                        break;
+                        case JVARTYPE_UINT16:
+                            *pVal = pValue->var.val.ui;
+                            break;
+
+                        case JVARTYPE_INT16:
+                            *pVal = pValue->var.val.i;
+                            break;
+
+                        case JVARTYPE_UINT32:
+                            *pVal = pValue->var.val.ul;
+                            break;
+
+                        case JVARTYPE_INT32:
+                            *pVal = pValue->var.val.l;
+                            break;
+
+                        default:
+                            result = -1;
+                            break;
                     }
                 }
             }
