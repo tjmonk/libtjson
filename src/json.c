@@ -1351,13 +1351,13 @@ int JSON_GetNum( JNode *pNode, char *name, int *pVal )
 }
 
 /*============================================================================*/
-/*  JSON_GetLong                                                              */
+/*  JSON_GetI64                                                               */
 /*!
-    Get a long integer value attribute from the specified node
+    Get an i64 integer value attribute from the specified node
 
-    The JSON_GetLong function checks that the specified node is a JSON object,
+    The JSON_GetI64 function checks that the specified node is a JSON object,
     and looks up the object attribute with the specified name and
-    returns the long integer value associated with the name.
+    returns the i64 integer value associated with the name.
 
     @param[in]
         pNode
@@ -1375,7 +1375,7 @@ int JSON_GetNum( JNode *pNode, char *name, int *pVal )
     @retval -1 the number could not be retrieved
 
 ==============================================================================*/
-int JSON_GetLong( JNode *pNode, char *name, long *pVal )
+int JSON_GetI64( JNode *pNode, char *name, int64_t *pVal )
 {
     JObject *pObject;
     JVar *pValue;

@@ -268,7 +268,7 @@ bool JSON_GetBool( JNode *pNode, char *name );
 
 int JSON_GetNum( JNode *pNode, char *name, int *pVal );
 
-int JSON_GetLong( JNode *pNode, char *name, long *pVal );
+int JSON_GetI64( JNode *pNode, char *name, long *pVal );
 
 JVarObject *JSON_GetVar( JNode *pNode, char *name );
 
