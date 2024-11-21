@@ -32,6 +32,7 @@ SOFTWARE.
 #include <stddef.h>
 #include <string.h>
 #include <errno.h>
+#include <inttypes.h>
 #include <tjson/json.h>
 
 /*============================================================================
@@ -695,8 +696,24 @@ static void json_PrintValue( JVar *pVar, FILE *fp )
                     fprintf( fp, "%d", pVar->var.val.ui );
                     break;
 
+                case JVARTYPE_INT16:
+                    fprintf( fp, "%d", pVar->var.val.i );
+                    break;
+
                 case JVARTYPE_UINT32:
                     fprintf( fp, "%d", pVar->var.val.ul );
+                    break;
+
+                case JVARTYPE_INT32:
+                    fprintf( fp, "%d", pVar->var.val.l );
+                    break;
+
+                case JVARTYPE_UINT64:
+                    fprintf( fp, "%" PRIu64, pVar->var.val.ull );
+                    break;
+
+                case JVARTYPE_INT64:
+                    fprintf( fp, "%" PRId64, pVar->var.val.ll );
                     break;
 
                 case JVARTYPE_FLOAT:
@@ -1308,6 +1325,103 @@ int JSON_GetNum( JNode *pNode, char *name, int *pVal )
 
                         case JVARTYPE_INT32:
                             *pVal = pValue->var.val.l;
+                            break;
+
+                        case JVARTYPE_UINT64:
+                            *pVal = pValue->var.val.ull;
+                            break;
+
+                        case JVARTYPE_INT64:
+                            *pVal = pValue->var.val.ll;
+                            break;
+
+                        default:
+                            result = -1;
+                            break;
+                    }
+                }
+            }
+
+            /* move to the next attribute in the object */
+            pNode = pNode->pNext;
+        }
+    }
+
+    return result;
+}
+
+/*============================================================================*/
+/*  JSON_GetLong                                                              */
+/*!
+    Get a long integer value attribute from the specified node
+
+    The JSON_GetLong function checks that the specified node is a JSON object,
+    and looks up the object attribute with the specified name and
+    returns the long integer value associated with the name.
+
+    @param[in]
+        pNode
+            pointer to the JSON object to get the value from
+
+    @param[in]
+        name
+            pointer to the name of the JSON object attribute to search for
+
+    @param[in]
+        pVal
+            pointer to a location to store the retrieved value
+
+    @retval 0 the number was found and returned
+    @retval -1 the number could not be retrieved
+
+==============================================================================*/
+int JSON_GetLong( JNode *pNode, char *name, long *pVal )
+{
+    JObject *pObject;
+    JVar *pValue;
+    int result = -1;
+
+    /* check that the node is an object */
+    if ( ( pNode != NULL ) &&
+         ( pNode->type == JSON_OBJECT ) &&
+         ( name != NULL ) &&
+         ( pVal != NULL ) )
+    {
+        /* get a pointer to the first attribute of the object */
+        pObject = (JObject *)pNode;
+        pNode = pObject->pFirst;
+        while( pNode != NULL )
+        {
+            if( strcmp( pNode->name, name ) == 0 )
+            {
+                if( pNode->type == JSON_VAR )
+                {
+                    result = 0;
+                    pValue = (JVar *)pNode;
+                    switch( pValue->var.type )
+                    {
+                        case JVARTYPE_UINT16:
+                            *pVal = pValue->var.val.ui;
+                            break;
+
+                        case JVARTYPE_INT16:
+                            *pVal = pValue->var.val.i;
+                            break;
+
+                        case JVARTYPE_UINT32:
+                            *pVal = pValue->var.val.ul;
+                            break;
+
+                        case JVARTYPE_INT32:
+                            *pVal = pValue->var.val.l;
+                            break;
+
+                        case JVARTYPE_UINT64:
+                            *pVal = pValue->var.val.ull;
+                            break;
+
+                        case JVARTYPE_INT64:
+                            *pVal = pValue->var.val.ll;
                             break;
 
                         default:
